@@ -1,9 +1,5 @@
 # Botnet
-Simple, Terrible botnet written in c#.
+Simple Botnet Written In c#
 
-This is a backup as I am rewriting the project.
-
-Type anything into the server and it will be sent to all connected clients.
-
-Type getIP for some testing.
-
+Work In Progress
+![firstBotnet](https://user-images.githubusercontent.com/86636387/232275262-40c75f27-3ddd-4a26-b940-494790b431ef.png)
