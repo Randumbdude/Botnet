@@ -1,7 +1,0 @@
-C:\Users\Riley\source\repos\Botnet\Server\bin\Debug\Server.exe.config
-C:\Users\Riley\source\repos\Botnet\Server\bin\Debug\Server.exe
-C:\Users\Riley\source\repos\Botnet\Server\bin\Debug\Server.pdb
-C:\Users\Riley\source\repos\Botnet\Server\obj\Debug\Server.csproj.CoreCompileInputs.cache
-C:\Users\Riley\source\repos\Botnet\Server\obj\Debug\Server.exe
-C:\Users\Riley\source\repos\Botnet\Server\obj\Debug\Server.pdb
-C:\Users\Riley\source\repos\Botnet\Server\obj\Debug\Server.csprojAssemblyReference.cache
