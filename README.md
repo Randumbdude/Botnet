@@ -1,5 +1,5 @@
 # Botnet
-Simple Botnet Written In c#
+Simple TCP Botnet Written In c#
 
 Work In Progress
 
