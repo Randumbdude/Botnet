@@ -1,8 +1,13 @@
 # Botnet
-Simple TCP Botnet Written In c#
+Simple TCP Botnet Written In C#
 
 Work In Progress
 
-As of 6/9/2023 I am reworking the server, the updated server will have multiple client support and just better overall things
+## 1.1 Changes:
+- support for multiple clients
+- counter for bots
+- bug fixes
+- 'msg' command
+- more phizzazz ;)
 
-![botnetProgress](https://user-images.githubusercontent.com/86636387/232346058-255c19a8-2be2-4e05-a057-f973d8aafbbb.png)
+![Screenshot 2023-06-09 234349](https://github.com/Randumbdude/Botnet/assets/86636387/5b477727-7433-43bb-b93f-0e9ae7b89ba5)
