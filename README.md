@@ -1,3 +1,4 @@
+# New Update 1.1 - https://github.com/Randumbdude/Botnet/tree/1.1
 # Botnet
 Simple TCP Botnet Written In c#
 
