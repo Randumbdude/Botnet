@@ -15,7 +15,7 @@ namespace Server
 
         public void StartServer()
         {
-            listener = new TcpListener(IPAddress.Parse("127.79.45.6"), 32767);
+            listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 25565);
             listener.Start();
             isRunning = true;
             connectedClients = new List<ConnectedClient>();
