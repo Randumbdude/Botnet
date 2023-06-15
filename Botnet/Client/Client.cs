@@ -13,7 +13,7 @@ namespace Client
         private static CommandHandler ch;
 
         //IP address to connect to
-        private static string address = "127.79.45.6";
+        private static string address = "127.0.0.1";
 
         private static TcpClient tcpclnt = new TcpClient();
 
@@ -40,7 +40,7 @@ namespace Client
                     }
                 }).Start();
 
-                tcpclnt.Connect(address, 32767);
+                tcpclnt.Connect(address, 25565);
                 writeDots = false;
                 // use the ipaddress as in the server program
 
